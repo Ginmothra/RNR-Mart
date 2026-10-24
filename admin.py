@@ -2,6 +2,20 @@ def tambah_barang(nama, harga, jumlah):
     with open ("storage/barang.txt", "a", encoding="utf-8") as file:
         file.write(f"{nama}|{harga}|{jumlah}\n")
 
+def cek_barang():
+    while True:
+        with open("storage/barang.txt", "r", encoding="utf-8") as file:
+            print("\n===Daftar Barang===")
+            for barang in file:
+                nama, harga, jumlah = barang.strip().split("|")
+                print(f"Nama: {nama}, Harga: {harga}, Jumlah: {jumlah}")
+        print("\nKembali ke menu sebelumnya? (y)")
+        kembali = input("").lower()
+        if kembali == "y":
+            break
+        else:
+            print("Pilihan tidak valid. Silakan coba lagi.")
+
 
 def admin_menu():
     while True:
@@ -41,7 +55,7 @@ def admin_menu():
                     print("Pilihan tidak valid. Silakan coba lagi.")
 
         elif pilih == "2":
-            cek_stok_barang()
+            cek_barang()
         elif pilih == "3":
             update_barang()
         elif pilih == "4":
