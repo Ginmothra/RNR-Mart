@@ -58,7 +58,30 @@ def update_barang(nama_barang, harga_baru, jumlah_baru):
                 file.write(f"{barang[0]}|{barang[1]}|{barang[2]}\n")
             return True
                 
+def hapus_barang(nama_barang):
+    daftar_barang = []
 
+    with open("storage/barang.txt", "r", encoding="utf-8") as file:
+        for barang in file:
+            nama, harga, jumlah = barang.strip().split("|")
+            daftar_barang.append([nama, harga, jumlah])
+
+    ditemukan = False
+
+    for i, barang in enumerate(daftar_barang):
+        if barang[0].lower() == nama_barang.lower():
+            del daftar_barang[i]
+            ditemukan = True
+            break
+
+    if not ditemukan:
+        print("Barang tidak ditemukan.\n")
+        return False
+
+    with open("storage/barang.txt", "w", encoding="utf-8") as file:
+        for barang in daftar_barang:
+            file.write(f"{barang[0]}|{barang[1]}|{barang[2]}\n")
+        return True
 
 def admin_menu():
     while True:
@@ -145,7 +168,19 @@ def admin_menu():
                         print("Pilihan tidak valid. Silakan coba lagi.")
 
         elif pilih == "4":
-            hapus_barang()
+            print("\n===Hapus Barang===\n")
+            while True:
+                nama_barang = input("Masukkan nama barang yang ingin dihapus: ").lower()
+                berhasil = hapus_barang(nama_barang)
+
+                if berhasil:
+                    print("Barang berhasil dihapus!")
+                    lanjut = input("\nApakah Anda ingin menghapus barang lagi? (y/n): ").lower()
+                    if lanjut != "y":
+                        break
+                else:
+                    print("Barang tidak ditemukan. Silakan coba lagi.")
+    
         elif pilih == "5":
             print("Logout berhasil!")
             break
